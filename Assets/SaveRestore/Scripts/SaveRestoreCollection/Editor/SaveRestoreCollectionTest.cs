@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace CleverCrow.SaveRestore {
+namespace CleverCrow.SaveRestore.Editors {
     public class SaveRestoreCollectionTest {
         private IStorage _storage;
         private SaveRestoreCollection _saveRestore;
