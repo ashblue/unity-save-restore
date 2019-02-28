@@ -1,5 +1,5 @@
 namespace CleverCrow.SaveRestore {
-    public interface IStorage {
-        ISaveRestore GetById (string id);
+    public interface IStorage<T> where T : ISaveRestore {
+        T GetById (string id);
     }
 }

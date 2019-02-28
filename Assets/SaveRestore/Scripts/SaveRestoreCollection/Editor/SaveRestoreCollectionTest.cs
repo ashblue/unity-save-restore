@@ -5,22 +5,25 @@ using NSubstitute;
 using NUnit.Framework;
 
 namespace CleverCrow.SaveRestore.Editors {
+    public interface ISaveRestoreCopy : ISaveRestore, ICopy<ISaveRestoreCopy> {
+    }
+    
     public class SaveRestoreCollectionTest {
-        private IStorage _storage;
-        private SaveRestoreCollection _saveRestore;
-        private ISaveRestore _obj;
-        private List<ISaveRestore> _list;
+        private IStorage<ISaveRestoreCopy> _storage;
+        private SaveRestoreCollection<ISaveRestoreCopy> _saveRestore;
+        private ISaveRestoreCopy _obj;
+        private List<ISaveRestoreCopy> _list;
         
         [SetUp]
         public void BeforeEach () {
-            _storage = Substitute.For<IStorage>();
-            _saveRestore = new SaveRestoreCollection(_storage);
+            _storage = Substitute.For<IStorage<ISaveRestoreCopy>>();
+            _saveRestore = new SaveRestoreCollection<ISaveRestoreCopy>(_storage);
             
-            _obj = Substitute.For<ISaveRestore>();
+            _obj = Substitute.For<ISaveRestoreCopy>();
             _obj.Save().Returns((x) => "asdf");
             _obj.Id.Returns((x) => "id");
             
-            _list = new List<ISaveRestore> {_obj};
+            _list = new List<ISaveRestoreCopy> {_obj};
         }
         
         public class SaveMethod : SaveRestoreCollectionTest {
@@ -39,7 +42,7 @@ namespace CleverCrow.SaveRestore.Editors {
         public class LoadMethod : SaveRestoreCollectionTest {
             [Test]
             public void It_should_return_a_list_of_copies_from_storage () {
-                var saveRestoreCopy = Substitute.For<ISaveRestore>();
+                var saveRestoreCopy = Substitute.For<ISaveRestoreCopy>();
                 
                 _obj.GetCopy().Returns((x) => saveRestoreCopy);
                 _storage.GetById("id").Returns(x => _obj);
@@ -54,7 +57,7 @@ namespace CleverCrow.SaveRestore.Editors {
             
             [Test]
             public void It_should_inject_the_save_string_into_Load_on_the_copy () {
-                var saveRestoreCopy = Substitute.For<ISaveRestore>();
+                var saveRestoreCopy = Substitute.For<ISaveRestoreCopy>();
                 
                 _obj.GetCopy().Returns((x) => saveRestoreCopy);
                 _storage.GetById("id").Returns(x => _obj);

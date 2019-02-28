@@ -4,6 +4,5 @@ namespace CleverCrow.SaveRestore {
 
         string Save ();
         void Load (string save);
-        ISaveRestore GetCopy ();
     }
 }
